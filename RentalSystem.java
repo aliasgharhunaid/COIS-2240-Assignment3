@@ -11,14 +11,28 @@ public class RentalSystem {
     private RentalHistory rentalHistory = new RentalHistory();
     
     
-    public void addVehicle(Vehicle vehicle) {
+    public boolean addVehicle(Vehicle vehicle) {
+        for (Vehicle v : vehicles) {
+            if (v.getLicensePlate().equalsIgnoreCase(vehicle.getLicensePlate())) {
+                System.out.println("Vehicle with this license plate already exists.");
+                return false;
+            }
+        }
         vehicles.add(vehicle);
+        return true;
         
         saveVehicle();
     }
 
-    public void addCustomer(Customer customer) {
+    public boolean addCustomer(Customer customer) {
+    	for (Customer c : customers) {
+            if (c.getCustomerId().equalsIgnoreCase(customer.getCustomerId())) {
+                System.out.println("Customer with this ID already exists.");
+                return false;
+            }
+        }
         customers.add(customer);
+        return true;
         
         saveCustomer();
     }
