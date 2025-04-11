@@ -5,17 +5,23 @@ import java.util.ArrayList;
 public class RentalSystem {
 	
 	private static RentalSystem instance;
+	
     private List<Vehicle> vehicles = new ArrayList<>();
     private List<Customer> customers = new ArrayList<>();
+    private List<RentalRecord> rentalRecords = new ArrayList<>();
     private RentalHistory rentalHistory = new RentalHistory();
     
     
     public void addVehicle(Vehicle vehicle) {
         vehicles.add(vehicle);
+        
+        saveVehicle();
     }
 
     public void addCustomer(Customer customer) {
         customers.add(customer);
+        
+        saveCustomer();
     }
 
     public void rentVehicle(Vehicle vehicle, Customer customer, LocalDate date, double amount) {
@@ -38,6 +44,8 @@ public class RentalSystem {
         else {
             System.out.println("Vehicle is not rented.");
         }
+        
+        saveRecord();
     }    
 
     public void displayAvailableVehicles() {
@@ -99,4 +107,37 @@ public class RentalSystem {
         }
         return instance;
     }
+    
+    public void saveVehicle() {
+        try (PrintWriter writer = new PrintWriter("vehicles.txt")) {
+            for (Vehicle v : vehicles) {
+                writer.println(v.getLicensePlate() + "," + v.getMake() + "," + v.getModel() + "," + v.getYear());
+            }
+        } catch (IOException e) {
+            System.out.println("Error saving vehicles: " + e.getMessage());
+        }
+    }
+
+    public void saveCustomer() {
+        try (PrintWriter writer = new PrintWriter("customers.txt")) {
+            for (Customer c : customers) {
+                writer.println(c.getCustomerId() + "," + c.getCustomerName());
+            }
+        } catch (IOException e) {
+            System.out.println("Error saving customers: " + e.getMessage());
+        }
+    }
+    
+    public void saveRecord() {
+        try (PrintWriter writer = new PrintWriter("rental_records.txt")) {
+            for (RentalRecord r : rentalRecords) {
+                writer.println(r.getCustomer().getCustomerId() + "," + r.getVehicle().getLicensePlate());
+            }
+        } catch (IOException e) {
+            System.out.println("Error saving records: " + e.getMessage());
+        }
+    }
+    
+    
+    
 }
