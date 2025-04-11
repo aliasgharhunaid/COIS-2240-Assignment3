@@ -11,12 +11,12 @@ public abstract class Vehicle {
     	if (make == null || make.isEmpty())
     		this.make = null;
     	else
-    		this.make = make.substring(0, 1).toUpperCase() + make.substring(1).toLowerCase();
+    		this.make = capitalize(formatString(make));
     	
     	if (model == null || model.isEmpty())
     		this.model = null;
     	else
-    		this.model = model.substring(0, 1).toUpperCase() + model.substring(1).toLowerCase();
+    		this.model = capitalize(formatString(make));
     	
         this.year = year;
         this.status = VehicleStatus.AVAILABLE;
@@ -47,6 +47,17 @@ public abstract class Vehicle {
 
     public String getInfo() {
         return "| " + licensePlate + " | " + make + " | " + model + " | " + year + " | " + status + " |";
+    }
+    
+    private String capitalize(String input) {
+        if (input == null || input.isEmpty()) {
+            return input;
+        }
+        return input.substring(0, 1).toUpperCase() + input.substring(1).toLowerCase();
+    }
+    
+    private String formatString(String input) {
+        return input.trim();
     }
 
 }
