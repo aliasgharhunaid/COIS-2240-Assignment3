@@ -3,9 +3,8 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 
 public class RentalSystem {
-	
+	rentalSystem.loadData();
 	private static RentalSystem instance;
-	
     private List<Vehicle> vehicles = new ArrayList<>();
     private List<Customer> customers = new ArrayList<>();
     private List<RentalRecord> rentalRecords = new ArrayList<>();
@@ -138,6 +137,45 @@ public class RentalSystem {
         }
     }
     
+    public void loadData() {
+        try (Scanner scanner = new Scanner(new File("vehicles.txt"))) {
+            while (scanner.hasNextLine()) {
+                String[] parts = scanner.nextLine().split(",");
+                Vehicle vehicle = new Vehicle(parts[0], parts[1], parts[2], Integer.parseInt(parts[3]));
+                vehicles.add(vehicle);
+            }
+        } catch (Exception e) {
+            System.out.println("Error loading vehicles: " + e.getMessage());
+        }
+        
+        try (Scanner scanner = new Scanner(new File("customers.txt"))) {
+            while (scanner.hasNextLine()) {
+                String[] parts = scanner.nextLine().split(",");
+                Customer customer = new Customer(parts[0], parts[1]);
+                customers.add(customer);
+            }
+        } catch (Exception e) {
+            System.out.println("Error loading customers: " + e.getMessage());
+        }
+        
+        try (Scanner scanner = new Scanner(new File("rental_records.txt"))) {
+            while (scanner.hasNextLine()) {
+                String[] parts = scanner.nextLine().split(",");
+                
+                Customer customer = findCustomerByName(parts[0]);
+                Vehicle vehicle = findVehicleByPlate(parts[1]);
+                
+                LocalDate startDate = LocalDate.parse(parts[2]);
+                LocalDate endDate = LocalDate.parse(parts[3]);
+
+                RentalRecord record = new RentalRecord(vehicle, customer, date, amount, "RENT");
+                rentalRecords.add(record);
+            }
+        } catch (Exception e) {
+            System.out.println("Error loading rental records: " + e.getMessage());
+        }
+    }
+
     
     
 }
