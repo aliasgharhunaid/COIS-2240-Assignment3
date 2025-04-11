@@ -47,16 +47,17 @@ public class VehicleRentalApp {
 		            	vehicle = null;
 		            }
                     
-                    if (vehicle != null){
-	                    vehicle.setLicensePlate(plate);
-	                    rentalSystem.addVehicle(vehicle);
-	                    System.out.print("Vehicle added.");
+                    if (vehicle != null) {
+                          try {
+                            vehicle.setLicensePlate(plate);
+                            rentalSystem.addVehicle(vehicle);
+                            System.out.println("Vehicle added successfully.");
+                        } catch (IllegalArgumentException e) {
+                            System.out.println("Invalid license plate format, Must be 3 uppercase letters followed by 3 digits (e.g., ABC123): Vehicle not added.");
+                        }
+                    } else {
+                        System.out.println("Vehicle not added.");
                     }
-                    else {
-	                    System.out.print("Vehicle not added.");
-                    }
-                    break;
-
                 case 2:
                     System.out.print("Enter customer ID: ");
                     int cid = scanner.nextInt();

@@ -28,7 +28,10 @@ public abstract class Vehicle {
     }
 
     public void setLicensePlate(String plate) {
-        this.licensePlate = plate == null ? null : plate.toUpperCase();
+    	if (plate == null || !isValidPlate(plate)) {
+            throw new IllegalArgumentException("Invalid license plate format. Must be 3 uppercase letters followed by 3 digits.");
+        }
+        this.licensePlate = plate.toUpperCase();
     }
 
     public void setStatus(VehicleStatus status) {
@@ -58,6 +61,10 @@ public abstract class Vehicle {
     
     private String formatString(String input) {
         return input.trim();
+    }
+    
+    public static boolean isValidPlate(String plate) {
+        return plate.matches("[A-Z]{3}[0-9]{3}");
     }
 
 }
